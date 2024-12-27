@@ -12,12 +12,17 @@
 <body>
     <div class="container">
         <div class="op">
-            <button class="op-button">JSON校验</button>
-            <button class="op-button">Base64</button>
-            <button class="op-button">Unicode转码</button>
+            <button class="op-button" value="JSON">JSON校验</button>
+            <button class="op-button" value="BASE64">Base64</button>
+            <button class="op-button" value="UNICODE">Unicode转码</button>
         </div>
         <label for="in"></label><textarea placeholder="请输入内容" id="in" name="data"></textarea>
         <div class="func">
+            <label for="op"></label>
+            <select id="op">
+                <option value=0>加密</option>
+                <option value=1>解密</option>
+            </select>
             <button onclick="execute()">提交</button>
             <button>粘贴</button>
             <button>全选</button>

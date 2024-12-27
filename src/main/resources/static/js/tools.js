@@ -20,9 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function execute (){
     const textarea = document.getElementById('in');
+    const route = document.querySelector('.selected');
+    const op = document.getElementById("op");
     let formData = {
-        route: 'JSON',
-        op:1,
+        route: route.value,
+        op:op.value,
         data: textarea.value
     };
     $.ajax({
