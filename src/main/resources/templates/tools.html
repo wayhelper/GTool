@@ -20,5 +20,14 @@
             <button th:each="op : ${ops}" th:text="${op.name}" th:value="${op.op}" onclick="execute(this)"/>
         </div>
     </div>
+<script>
+    $("#in").setTextareaCount({
+        width: "30px",
+        bgColor: "#999",
+        color: "#FFF",
+        display: "block"
+    });
+</script>
 </body>
 </html>
+
