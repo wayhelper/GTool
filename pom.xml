@@ -54,7 +54,6 @@
                     <fork>true</fork>
                     <!--打包时，强制utf-8编码 -->
                     <jvmArguments>-Dfile.encoding=UTF-8</jvmArguments>
-                    <outputDirectory>D:\我的工作\我的项目\物业管理\build</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
