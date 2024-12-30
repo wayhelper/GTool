@@ -39,13 +39,13 @@ public class Op {
             );
         } else if (route == RouteEnum.UNICODE) {
             return Arrays.asList(
-                    new Op("Unicode加密", Operate.ENCRYPT),
-                    new Op("Unicode解密", Operate.DECRYPT)
+                new Op("Unicode加密", Operate.ENCRYPT),
+                new Op("Unicode解密", Operate.DECRYPT)
             );
         }else { //默认json
             return Arrays.asList(
-                    new Op("格式化JSON", Operate.FORMAT),
-                    new Op("压缩JSON", Operate.DENSITY)
+                new Op("格式化JSON", Operate.FORMAT),
+                new Op("压缩JSON", Operate.DENSITY)
             );
         }
     }

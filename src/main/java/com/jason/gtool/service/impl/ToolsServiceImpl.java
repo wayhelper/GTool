@@ -1,8 +1,11 @@
 package com.jason.gtool.service.impl;
 
 import com.jason.gtool.domain.req.GDoPram;
+import com.jason.gtool.domain.req.RoutePram;
+import com.jason.gtool.domain.vo.Op;
 import com.jason.gtool.service.IToolsService;
 import com.jason.gtool.utils.Result;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +19,11 @@ public class ToolsServiceImpl implements IToolsService {
     @Override
     public Result route(GDoPram param) {
         return param.getRoute().getStrategy().execute(param.getOp(), param.getData());
+    }
+
+    @Override
+    @Cacheable(cacheNames = "routeOptions", key = "#param.route")
+    public Result getReouteOptions(RoutePram param) {
+        return Result.get(200, "success", Op.getOpsByRoute(param.getRoute()));
     }
 }

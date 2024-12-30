@@ -190,7 +190,7 @@ function execute (op){
         contentType: 'application/json',
         success: function(response) {
             if (response.code === 200) {
-                msg(response.msg, 3000);
+                msg(response.msg, 1500);
                 textarea.value=response.data;
             } else {
                 msg(response.msg, 0)

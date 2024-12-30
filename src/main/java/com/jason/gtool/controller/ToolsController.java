@@ -2,8 +2,6 @@ package com.jason.gtool.controller;
 
 import com.jason.gtool.domain.req.GDoPram;
 import com.jason.gtool.domain.req.RoutePram;
-import com.jason.gtool.domain.type.RouteEnum;
-import com.jason.gtool.domain.vo.Op;
 import com.jason.gtool.service.IToolsService;
 import com.jason.gtool.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,12 @@ public class ToolsController {
     @Autowired
     IToolsService toolsService;
     @PostMapping("/execute")
-    public Result execute(@RequestBody GDoPram param){
+    public Result execute(@RequestBody GDoPram param) {
         return this.toolsService.route(param);
     }
+
     @PostMapping("/route")
-    public Result route(@RequestBody RoutePram param){
-        return Result.get(200, "success", Op.getOpsByRoute(param.getRoute()));
+    public Result route(@RequestBody RoutePram param) {
+        return this.toolsService.getReouteOptions(param);
     }
 }
