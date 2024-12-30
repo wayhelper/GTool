@@ -1,7 +1,7 @@
 package com.jason.gtool.service;
 
 import com.jason.gtool.domain.req.GDoPram;
-import com.jason.gtool.domain.req.RoutePram;
+import com.jason.gtool.domain.type.RouteEnum;
 import com.jason.gtool.utils.Result;
 
 /**
@@ -19,9 +19,15 @@ public interface IToolsService {
     Result route(GDoPram param);
 
     /**
+     * 获取路由列表
+     * @return
+     */
+    Result getRoutes();
+
+    /**
      * 获取路由选项
      * @param param
      * @return
      */
-    Result getReouteOptions(RoutePram param);
+    Result getReouteOptions(RouteEnum param);
 }

@@ -3,7 +3,13 @@ package com.jason.gtool.handle;
 import cn.hutool.core.text.UnicodeUtil;
 import com.jason.gtool.domain.IStrategy;
 import com.jason.gtool.domain.type.Operate;
+import com.jason.gtool.domain.type.RouteEnum;
+import com.jason.gtool.domain.vo.Op;
 import com.jason.gtool.utils.Result;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author JingWei Guo
@@ -21,13 +27,21 @@ public class Unicode implements IStrategy {
     }
 
     @Override
+    public List<Op> getOps() {
+        return Arrays.asList(
+            new Op("Unicode加密", Operate.ENCRYPT),
+            new Op("Unicode解密", Operate.DECRYPT)
+        );
+    }
+
+    @Override
     public Result execute(Operate op, String data) {
         if (Operate.DECRYPT ==op) {
             return this.decrypt(data);
         } else if (Operate.ENCRYPT==op){
             return this.encrypt(data);
-        }else {
-            return null;
+        } else {
+            return Result.get(500, "操作失败! 未实现的方法",null);
         }
     }
 }

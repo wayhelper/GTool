@@ -2,13 +2,14 @@ package com.jason.gtool.domain.vo;
 
 import com.jason.gtool.domain.type.Operate;
 import com.jason.gtool.domain.type.RouteEnum;
+import com.jason.gtool.handle.JSON;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author JingWei Guo
@@ -24,29 +25,15 @@ public class Op {
     private Operate op;
 
     /**
-     * 根据路由获取操作列表
+     * 根据路由获取操作列表用于显示在前端
      */
     public static List<Op> getOpsByRoute(RouteEnum route) {
-        if (route == RouteEnum.BASE64) {
-            return Arrays.asList(
-                new Op("Base64加密", Operate.ENCRYPT),
-                new Op("Base64解密", Operate.DECRYPT)
-            );
-        } else if (route == RouteEnum.JSON) {
-            return Arrays.asList(
-                new Op("格式化JSON", Operate.FORMAT),
-                new Op("压缩JSON", Operate.DENSITY)
-            );
-        } else if (route == RouteEnum.UNICODE) {
-            return Arrays.asList(
-                new Op("Unicode加密", Operate.ENCRYPT),
-                new Op("Unicode解密", Operate.DECRYPT)
-            );
-        }else { //默认json
-            return Arrays.asList(
-                new Op("格式化JSON", Operate.FORMAT),
-                new Op("压缩JSON", Operate.DENSITY)
-            );
+        if (route == null) {//default route use json
+            return new JSON().getOps();
         }
+        return Route.routes().stream()
+            .filter(routeEnum -> routeEnum.getValue() == route)
+            .map(routeEnum -> routeEnum.getValue().getStrategy().getOps())
+            .flatMap(List::stream).collect(Collectors.toList());
     }
 }

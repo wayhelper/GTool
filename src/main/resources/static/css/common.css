@@ -1,5 +1,4 @@
-
-/* 消息提示的样式 */
+/*define msg*/
 .custom-msg {
     position: fixed;
     top: 50%;
@@ -11,10 +10,8 @@
     border-radius: 5px;
     font-size: 14px;
     z-index: 9999;
-    /*animation: fade-in-out 3s ease forwards;*/
 }
 
-/* 动画效果 */
 @keyframes fade-in-out {
     0% { opacity: 0; transform: translate(-50%, -60%); }
     10% { opacity: 1; transform: translate(-50%, -50%); }

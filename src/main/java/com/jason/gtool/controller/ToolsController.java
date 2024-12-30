@@ -25,6 +25,6 @@ public class ToolsController {
 
     @PostMapping("/route")
     public Result route(@RequestBody RoutePram param) {
-        return this.toolsService.getReouteOptions(param);
+        return this.toolsService.getReouteOptions(param.getRoute());
     }
 }

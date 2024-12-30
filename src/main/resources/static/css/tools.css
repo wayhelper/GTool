@@ -7,7 +7,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    overflow: hidden; /* 防止滚动 */
+    overflow: hidden;
 }
 .container {
     background-color: #fff;
@@ -16,7 +16,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 98%;
 }
-textarea {
+#in {
     width: 98%;
     height: 83vh;
     margin-bottom: 10px;
@@ -70,5 +70,5 @@ textarea {
 }
 
 .route-button.selected {
-    background-color: grey; /* 选中状态的颜色 */
+    background-color: grey;
 }

@@ -1,15 +1,11 @@
 package com.jason.gtool.controller;
 
 import com.jason.gtool.domain.type.RouteEnum;
-import com.jason.gtool.domain.vo.Op;
-import com.jason.gtool.domain.vo.Route;
+import com.jason.gtool.service.IToolsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author JingWei Guo
@@ -18,19 +14,13 @@ import java.util.List;
  */
 @Controller
 public class IndexController {
-    @PostConstruct
-    private List<Route> routes(){
-        return Arrays.asList(
-            new Route("JSON校验", RouteEnum.JSON),
-            new Route("Base64", RouteEnum.BASE64),
-            new Route("Unicode转码",RouteEnum.UNICODE)
-        );
-    }
+    @Autowired
+    IToolsService toolsService;
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("routes", this.routes());
-        model.addAttribute("ops", Op.getOpsByRoute(null));
+        model.addAttribute("routes", this.toolsService.getRoutes().getData());
+        model.addAttribute("ops", this.toolsService.getReouteOptions(RouteEnum.JSON).getData());
         return "tools";
     }
 }

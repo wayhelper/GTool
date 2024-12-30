@@ -13,5 +13,9 @@ public enum Operate {
     // 格式化
     FORMAT,
     // 压缩
-    DENSITY;
+    DENSITY,
+    // 转义
+    ESCAPE,
+    // 反转义
+    UNESCAPE;
 }
