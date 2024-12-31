@@ -1,3 +1,4 @@
+//set language
 const language = 'json';
 // after load
  window.onload = function () {

@@ -1,6 +1,5 @@
 package com.jason.gtool.domain.req;
 
-import com.jason.gtool.domain.type.Operate;
 import com.jason.gtool.domain.type.RouteEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -3,7 +3,7 @@ package com.jason.gtool.domain.type;
 /**
  * @author JingWei Guo
  * @date 2024/12/26 17:54
- * @desciption:
+ * @desciption: 操作枚举
  */
 public enum Operate {
     // 加密
@@ -22,7 +22,10 @@ public enum Operate {
     CAPITAL,
     //转小写
     LOWER,
+    //美化mysql
     MYSQL,
+    //美化oracle
     ORACLE,
+    //美化postgres
     PGSQL;
 }
