@@ -17,13 +17,14 @@
         <div class="route">
             <button class="route-button" th:each="route : ${routes}" th:text="${route.name}" th:value="${route.value}" onclick="route(this)"/>
         </div>
-        <pre id="code" class="ace_editor" style="min-height:83vh">
+        <pre id="code" class="ace_editor" style="min-height:80vh">
             <label for="in"></label><textarea id="in" class="ace_text-input"></textarea>
         </pre>
         <div class="func" id="ops">
             <button th:each="op : ${ops}" th:text="${op.name}" th:value="${op.op}" onclick="execute(this)"/>
         </div>
     </div>
+    <div class="footer">版权所有 &copy; 2024-2025 GTool 联系方式：<a href="https://gitee.com/jingwei129/gtool">Gitee</a></div>
     <script>
         //初始化对象
         editor = ace.edit("code");

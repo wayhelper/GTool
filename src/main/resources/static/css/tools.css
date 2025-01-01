@@ -7,6 +7,8 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
     overflow: hidden;
 }
 .container {
@@ -17,7 +19,7 @@ body {
     width: 98%;
 }
 #in {
-    width: 98%;
+    width: 98vw;
     height: 83vh;
     margin-bottom: 10px;
     padding: 10px;
@@ -30,6 +32,7 @@ body {
 .func {
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 5px;
 }
 .func button {
     padding: 5px 10px;
@@ -40,6 +43,7 @@ body {
     border-radius: 2px;
     cursor: pointer;
     transition: background-color 0.3s;
+    z-index: auto;
 }
 .func button:hover {
     background-color: #0056b3;
@@ -51,7 +55,7 @@ body {
 .route {
     display: flex;
     justify-content: flex-start;
-    margin-top: 5px;
+    z-index: auto;
 }
 
 .route-button {
@@ -71,4 +75,14 @@ body {
 
 .route-button.selected {
     background-color: grey;
+}
+.footer {
+    position: fixed;
+    padding-top: 5px;
+    bottom: 0;
+    height: 3vh;
+    width: 100vw;
+    background-color: #f8f9fa;
+    text-align: center;
+    z-index: 1; /* 确保 footer 不遮盖主要内容 */
 }
