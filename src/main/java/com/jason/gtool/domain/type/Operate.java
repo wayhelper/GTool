@@ -27,5 +27,9 @@ public enum Operate {
     //美化oracle
     ORACLE,
     //美化postgres
-    PGSQL;
+    PGSQL,
+    //日期转时间戳
+    TIMESTAMP,
+    //时间戳转日期
+    DATE;
 }

@@ -3,12 +3,10 @@ package com.jason.gtool.handle;
 import cn.hutool.core.text.UnicodeUtil;
 import com.jason.gtool.domain.IStrategy;
 import com.jason.gtool.domain.type.Operate;
-import com.jason.gtool.domain.type.RouteEnum;
 import com.jason.gtool.domain.vo.Op;
 import com.jason.gtool.utils.Result;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,11 +16,11 @@ import java.util.List;
  */
 public class Unicode implements IStrategy {
 
-    public Result encrypt(String data) {
+    private Result encrypt(String data) {
         return Result.get(200, "加密成功", UnicodeUtil.toUnicode(data));
     }
 
-    public Result decrypt(String data) {
+    private Result decrypt(String data) {
         return Result.get(200, "解密成功", UnicodeUtil.toString(data));
     }
 

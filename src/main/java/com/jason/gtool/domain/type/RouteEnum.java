@@ -12,6 +12,7 @@ import lombok.Getter;
 
 @Getter
 public enum RouteEnum {
+    UNIX(new UNIX()),
     SQL(new Sql()),
     CASE(new Case()),
     UNICODE(new Unicode()),

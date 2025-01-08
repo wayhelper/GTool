@@ -22,7 +22,7 @@ public class JSON implements IStrategy {
      * @param data
      * @return
      */
-    public Result format(String data) {
+    private Result format(String data) {
         return Result.get(200, "老铁这个JSON没毛病!", JSONUtil.toJsonPrettyStr(data));
     }
 
@@ -31,7 +31,7 @@ public class JSON implements IStrategy {
      * @param data
      * @return
      */
-    public Result density(String data) {
+    private Result density(String data) {
         return Result.get(200, "压缩成功!", JSONUtil.parse(data).toString());
     }
 
@@ -39,7 +39,7 @@ public class JSON implements IStrategy {
      * 转义JSON
      * @return
      */
-    public Result escape(String data){
+    private Result escape(String data){
         return Result.get(200, "转义成功!", EscapeUtils.escape(data));
     }
 
@@ -47,7 +47,7 @@ public class JSON implements IStrategy {
      * 去转义
      * @return
      */
-    public Result Unescape(String data){
+    private Result Unescape(String data){
         return Result.get(200, "去除转义!", EscapeUtils.unescape(data));
     }
 

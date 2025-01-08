@@ -16,15 +16,15 @@ import java.util.List;
  * @desciption: sql工具
  */
 public class Sql implements IStrategy {
-    public Result mysql(String data) {
+    private Result mysql(String data) {
         return Result.get(200, "美化成功", SQLUtils.formatMySql(data));
     }
 
-    public Result oracle(String data) {
+    private Result oracle(String data) {
         return Result.get(200, "美化成功", SQLUtils.formatOracle(data));
     }
 
-    public Result pgsql(String data) {
+    private Result pgsql(String data) {
         return Result.get(200, "美化成功", SQLUtils.format(data, DbType.postgresql));
     }
     @Override

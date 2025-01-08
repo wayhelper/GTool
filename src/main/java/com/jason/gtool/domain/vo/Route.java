@@ -32,7 +32,8 @@ public class Route {
             new Route("Base64", RouteEnum.BASE64),
             new Route("Unicode转码",RouteEnum.UNICODE),
             new Route("字母大小写",RouteEnum.CASE),
-            new Route("SQL美化",RouteEnum.SQL)
+            new Route("SQL美化",RouteEnum.SQL),
+            new Route("时间戳转换",RouteEnum.UNIX)
         );
     }
 }

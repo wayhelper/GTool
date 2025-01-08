@@ -20,7 +20,7 @@ public class Case implements IStrategy {
      * @param data
      * @return
      */
-    public Result capital(String data) {
+    private Result capital(String data) {
         return Result.get(200, "操作成功", data.toUpperCase());
     }
 
@@ -29,7 +29,7 @@ public class Case implements IStrategy {
      * @param data
      * @return
      */
-    public Result lower(String data) {
+    private Result lower(String data) {
         return Result.data(data.toLowerCase());
     }
 

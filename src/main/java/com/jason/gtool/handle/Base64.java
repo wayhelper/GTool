@@ -16,12 +16,12 @@ import java.util.List;
 public class Base64 implements IStrategy {
 
 
-    public Result encrypt(String data) {
+    private Result encrypt(String data) {
         return Result.get(200, "加密成功", cn.hutool.core.codec.Base64.encode(data));
     }
 
 
-    public Result decrypt(String data) {
+    private Result decrypt(String data) {
         return Result.get(200, "解密成功", cn.hutool.core.codec.Base64.decodeStr(data));
     }
 
