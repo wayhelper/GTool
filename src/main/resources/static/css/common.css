@@ -18,3 +18,27 @@
     90% { opacity: 1; transform: translate(-50%, -50%); }
     100% { opacity: 0; transform: translate(-50%, -40%); }
 }
+/*加载g-load*/
+/* 旋转加载动画 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 包裹加载动画的容器 */
+.g-load-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.g-load-loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #59a782;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}

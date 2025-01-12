@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
  }
 
 function route(route){
+    loading(true);
     let formData = {
         route: route.value
     };
@@ -68,6 +69,9 @@ function route(route){
         },
         error: function(error) {
             msg(error.msg, 0)
+        },
+        complete: function() {
+            loading(false);
         }
     });
 }
@@ -96,6 +100,7 @@ function updateOps(op, ops){
 }
 
 function execute (op){
+     loading(true);
     const editor = ace.edit("code");
     const route = document.querySelector('.selected');
     let formData = {
@@ -118,6 +123,9 @@ function execute (op){
         },
         error: function(error) {
             msg(error.msg, 0)
+        },
+        complete: function() {
+            loading(false);
         }
     });
 }
