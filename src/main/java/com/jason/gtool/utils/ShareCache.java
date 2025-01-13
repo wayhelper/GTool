@@ -34,6 +34,7 @@ public class ShareCache {
     @CacheEvict(value = "shareCache", key = "#key")
     public void del(String key) {
         //TODO
+        System.out.println("del +++"+ key);
         cache.remove(key);
     }
 
@@ -41,7 +42,7 @@ public class ShareCache {
      * 清除过期缓存
      */
     @Scheduled(cron = "0/3 * * * * ?") //3秒执行一次
-    private void schdule () {
+    public void schdule () {
         long now = System.currentTimeMillis();
         cache.forEach((key, value) -> {
             if (now > value) {
@@ -54,6 +55,6 @@ public class ShareCache {
      * @return 5分钟后的时间戳
      */
     private long getTimeStampAfter5Minutes() {
-        return System.currentTimeMillis()+ 15 * 60 * 1000;
+        return System.currentTimeMillis()+ 5 * 60 * 1000;
     }
 }
