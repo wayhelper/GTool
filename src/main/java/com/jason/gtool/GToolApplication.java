@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @SpringBootApplication
 public class GToolApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(GToolApplication.class, args);
     }
