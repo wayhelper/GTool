@@ -6,7 +6,7 @@ spring:
 server:
   port: 5010
 
-gtool:
-  host: a.alal.site
 #gtool:
-#  host: http://localhost:5010
+#  host: https://a.alal.site
+gtool:
+  host: http://localhost:5010
