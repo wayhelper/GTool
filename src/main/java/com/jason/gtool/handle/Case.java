@@ -1,6 +1,7 @@
 package com.jason.gtool.handle;
 
-
+import com.jason.gtool.common.utils.EscapeUtils;
+import com.jason.gtool.common.utils.StringUtils;
 import com.jason.gtool.domain.IStrategy;
 import com.jason.gtool.domain.type.Operate;
 import com.jason.gtool.domain.vo.Op;
@@ -33,12 +34,41 @@ public class Case implements IStrategy {
         return Result.data(data.toLowerCase());
     }
 
+    /**
+     * 将下划线或空格转为驼峰命名法
+     * @param data
+     * @return
+     */
+    private Result camel(String data) {
+        return Result.get(200, "转换成功!", StringUtils.toCamelCase(data));
+    }
+
+    /**
+     * 将驼峰转为空格
+     * @param data
+     * @return
+     */
+    private Result space(String data) {
+        return Result.get(200, "转换成功!", StringUtils.camelToSpace(data));
+    }
+
+    /**
+     * 将驼峰转为下划线
+     * @param data
+     * @return
+     */
+    private Result underline(String data) {
+        return Result.get(200, "转换成功!", StringUtils.camelToUnderscore(data));
+    }
 
     @Override
     public List<Op> getOps() {
         return Arrays.asList(
             new Op("字母转大写", Operate.CAPITAL),
-            new Op("字母转小写", Operate.LOWER)
+            new Op("字母转小写", Operate.LOWER),
+            new Op("下划线&空格转驼峰", Operate.CAMEL),
+            new Op("驼峰转空格", Operate.SPACE),
+            new Op("驼峰转下划线", Operate.UNDERLINE)
         );
     }
 
@@ -48,6 +78,12 @@ public class Case implements IStrategy {
             return this.capital(data);
         } else if (Operate.LOWER==op){
             return this.lower(data);
+        } else if (Operate.CAMEL==op) {
+            return this.camel(data);
+        } else if (Operate.SPACE==op) {
+            return this.space(data);
+        } else if (Operate.UNDERLINE==op) {
+            return this.underline(data);
         } else {
             return Result.get(500, "操作失败! 未实现的方法",null);
         }

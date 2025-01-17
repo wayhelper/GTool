@@ -22,6 +22,12 @@ public enum Operate {
     CAPITAL,
     //转小写
     LOWER,
+    //下划线&空格转驼峰
+    CAMEL,
+    //驼峰转下划线
+    UNDERLINE,
+    //驼峰转空格
+    SPACE,
     //美化mysql
     MYSQL,
     //美化oracle
