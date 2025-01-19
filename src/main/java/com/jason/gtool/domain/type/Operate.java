@@ -37,5 +37,11 @@ public enum Operate {
     //日期转时间戳
     TIMESTAMP,
     //时间戳转日期
-    DATE;
+    DATE,
+    //加密md5
+    EMD5,
+    //加密des
+    EDES,
+    //解密des
+    DDES;
 }

@@ -45,7 +45,6 @@
             <artifactId>hutool-json</artifactId>
             <version>${hutool}</version>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
