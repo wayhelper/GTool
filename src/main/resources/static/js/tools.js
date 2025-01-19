@@ -110,6 +110,7 @@ function updateOps(op, ops){
 }
 
 function execute (op){
+     let key = handle(op);
      loading(true);
     const editor = ace.edit("code");
     const route = document.querySelector('.selected');
@@ -117,7 +118,7 @@ function execute (op){
     let formData = {
         route: route.value,
         op:op.value,
-        data: editor.getValue()
+        data: key ===null ? editor.getValue() : editor.getValue()+','+key
     };
     $.ajax({
         type: 'POST',
@@ -176,6 +177,27 @@ function share (){
             loading(false);
         }
     });
+}
+
+function handle(op) {
+    let key = null;
+    let promptMessage = '';
+
+    if (op.value === 'EDES') {
+        promptMessage = "请输入加密密钥：";
+    } else if (op.value === 'DDES') {
+        promptMessage = "请输入解密密钥：";
+    } else {
+        return key;
+    }
+
+    key = prompt(promptMessage);
+    if (!key) {
+        alert("使用默认密钥");
+        return;
+    }
+
+    return key;
 }
 
 
