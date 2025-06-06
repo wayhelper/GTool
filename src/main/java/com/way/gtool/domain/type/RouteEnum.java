@@ -1,8 +1,7 @@
 package com.way.gtool.domain.type;
 
-import com.jason.gtool.handle.*;
-import com.way.gtool.domain.IStrategy;
 import com.way.gtool.handle.*;
+import com.way.gtool.domain.IStrategy;
 
 /**
  * @author JingWei Guo
