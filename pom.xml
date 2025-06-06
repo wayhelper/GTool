@@ -8,7 +8,7 @@
         <version>3.4.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.jason</groupId>
+    <groupId>com.way</groupId>
     <artifactId>GTool</artifactId>
     <version>1.0.0</version>
     <name>GTool</name>
