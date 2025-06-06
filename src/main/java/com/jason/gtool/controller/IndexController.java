@@ -17,10 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Controller
 public class IndexController {
+    
+    private final IToolsService toolsService;
+    private final ShareCache shareCache;
+
     @Autowired
-    IToolsService toolsService;
-    @Autowired
-    ShareCache shareCache;
+    public IndexController(IToolsService toolsService, ShareCache shareCache) {
+        this.toolsService = toolsService;
+        this.shareCache = shareCache;
+    }
 
     @GetMapping("/")
     public String index(Model model) {
@@ -29,7 +34,7 @@ public class IndexController {
         return "tools";
     }
     @GetMapping("/share/{sid}")
-    public String share(@PathVariable("sid") String sid, Model model) {
+    public String share(@PathVariable("sid") int sid, Model model) {
         model.addAttribute("routes", this.toolsService.getRoutes().getData());
         model.addAttribute("ops", this.toolsService.getReouteOptions(RouteEnum.JSON).getData());
         SharePram share = this.shareCache.get(sid);

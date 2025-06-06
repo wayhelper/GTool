@@ -99,3 +99,11 @@ body {
 .share-btn:hover {
     background-color: limegreen;
 }
+
+.theme-btn {
+    display: inline-block;
+    margin-left: auto; /* 将按钮推到最右侧 */
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    opacity: 0.5;
+}

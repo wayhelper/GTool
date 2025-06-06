@@ -43,5 +43,9 @@ public enum Operate {
     //加密des
     EDES,
     //解密des
-    DDES;
+    DDES,
+    //转中文
+    TOCN,
+    //转英文
+    TOEN;
 }

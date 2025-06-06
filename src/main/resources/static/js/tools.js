@@ -1,6 +1,26 @@
 let edit = true;
+let bgcolor ='#f4f4f9';
+
 // after load
  window.onload = function () {
+     let bulletin = localStorage.getItem("bulletin");
+     if (!bulletin) {
+         localStorage.setItem("bulletin", "感谢您访问我们的工具网站！我们提供多种实用工具，帮助您更高效地完成工作。请随时探索和使用！如您需要更多定制功能请自行fork本项目进行二次开发");
+         createAnnouncementModal(localStorage.getItem("bulletin"));
+     }
+     if (localStorage.getItem('theme')==='') {
+         localStorage.setItem('theme', 'chrome')
+     }
+     if (localStorage.getItem('bgcolor')==='') {
+         localStorage.setItem('bgcolor', '#f4f4f9');
+     } else {
+         ['body', '.container', '.footer'].forEach(selector => {
+             const element = document.querySelector(selector);
+             if (element) {
+                 element.style.backgroundColor = localStorage.getItem('bgcolor');
+             }
+         });
+     }
      //open wellcome
      msg('欢迎使用~~', 1000);
      console.log('欢迎使用GTool工具站^_^');
@@ -34,11 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
+ // init aceeditor
  function init(language, value) {
      editor = ace.edit("code");
-     theme = "chrome";
-     editor.setTheme("ace/theme/" + theme);
+     editor.setTheme("ace/theme/" + localStorage.getItem('theme'));
      editor.session.setMode("ace/mode/" + language);
      editor.setFontSize(16);
      editor.setReadOnly(false);
@@ -60,6 +79,23 @@ document.addEventListener('DOMContentLoaded', function () {
      });
  }
 
+ // change theme
+ function changeTheme() {
+     theme = localStorage.getItem('theme') === 'chrome' ? 'monokai' : 'chrome';
+     editor = ace.edit("code");
+     editor.setTheme("ace/theme/" + theme);
+     localStorage.setItem('theme', theme);
+
+     const bgColor = localStorage.getItem('bgcolor') === '#f4f4f9' ? '#2C2C2C' : '#f4f4f9';
+     ['body', '.container', '.footer'].forEach(selector => {
+         const element = document.querySelector(selector);
+         if (element) {
+             element.style.backgroundColor = bgColor;
+         }
+     });
+     localStorage.setItem('bgcolor', bgColor);
+}
+//route
 function route(route){
     loading(true);
     let formData = {
@@ -67,7 +103,7 @@ function route(route){
     };
     $.ajax({
         type: 'POST',
-        url: '/tools/route',
+        url: '/gtool/tools/route',
         data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(response) {
@@ -85,11 +121,13 @@ function route(route){
         }
     });
 }
-
+// update ops
 function updateOps(op, ops){
      if (op==='JSON') {
          init('json',null);
-     }else {
+     }else if (op==='TRANSLATE') {
+         init('markdown',null)
+     } else {
          init('sql', null);
      }
     const container = document.getElementById('ops');
@@ -108,13 +146,14 @@ function updateOps(op, ops){
         container.appendChild(button);
     });
 }
-
+// execute method
 function execute (op){
      let key = handle(op);
      loading(true);
     const editor = ace.edit("code");
     const route = document.querySelector('.selected');
     const sharebutton = document.querySelector('.share-btn');
+    const themeBtn = document.querySelector('.theme-btn');
     let formData = {
         route: route.value,
         op:op.value,
@@ -122,13 +161,14 @@ function execute (op){
     };
     $.ajax({
         type: 'POST',
-        url: '/tools/execute',
+        url: '/gtool/tools/execute',
         data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(response) {
             if (response.code === 200) {
                 msg(response.msg, 1500);
                 editor.setValue(response.data, 1);
+                themeBtn.style.display = 'none';
                 sharebutton.style.display = 'inline-block';
             } else {
                 msg(response.msg, 0)
@@ -142,7 +182,10 @@ function execute (op){
         }
     });
 }
+// share gtool
 function share (){
+    const themeBtn = document.querySelector('.theme-btn');
+    themeBtn.style.display = 'inline-block';
     loading(true);
     const editor = ace.edit("code");
     const sharebutton = document.querySelector('.share-btn');
@@ -153,7 +196,7 @@ function share (){
     };
     $.ajax({
         type: 'POST',
-        url: '/tools/share',
+        url: '/gtool/tools/share',
         data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(response) {
@@ -178,8 +221,8 @@ function share (){
         }
     });
 }
-
-function handle(op) {
+// handle key
+function handle(op){
     let key = null;
     let promptMessage = '';
 

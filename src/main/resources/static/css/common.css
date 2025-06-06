@@ -18,6 +18,7 @@
     90% { opacity: 1; transform: translate(-50%, -50%); }
     100% { opacity: 0; transform: translate(-50%, -40%); }
 }
+
 /*加载g-load*/
 /* 旋转加载动画 */
 @keyframes spin {

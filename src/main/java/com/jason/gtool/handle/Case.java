@@ -1,6 +1,5 @@
 package com.jason.gtool.handle;
 
-import com.jason.gtool.common.utils.EscapeUtils;
 import com.jason.gtool.common.utils.StringUtils;
 import com.jason.gtool.domain.IStrategy;
 import com.jason.gtool.domain.type.Operate;

@@ -10,6 +10,7 @@ import com.jason.gtool.domain.IStrategy;
  */
 
 public enum RouteEnum {
+    TRANSLATE(new Translate()),
     CRYPTION(new Cryption()),
     UNIX(new UNIX()),
     SQL(new Sql()),

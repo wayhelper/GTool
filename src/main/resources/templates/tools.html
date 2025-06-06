@@ -17,6 +17,7 @@
         <div class="route">
             <button class="route-button" th:each="route : ${routes}" th:text="${route.name}" th:value="${route.value}" onclick="route(this)"/>
             <button class="share-btn" id="share-button" onclick="share()">🔗一键分享</button>
+            <button class="theme-btn" onclick="changeTheme()">🌙/☀️</button>
         </div>
         <pre id="code" class="ace_editor" style="min-height:80vh">
             <label for="in"></label><textarea id="in" class="ace_text-input"></textarea>

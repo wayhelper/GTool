@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ShareCache {
     @Autowired
     ApplicationContext applicationContext;
-
     /**
      * solve same class not use cache problem
      * @return
@@ -23,19 +22,19 @@ public class ShareCache {
         return this.applicationContext.getBean(ShareCache.class);
     }
 
-    private static ConcurrentHashMap<String, Long> cache = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Integer, Long> cache = new ConcurrentHashMap<>();
     @Cacheable(value = "shareCache", key = "#key")
-    public SharePram set(String key, SharePram param) {
+    public SharePram set(int key, SharePram param) {
         cache.put(key, this.getTimeStampAfter5Minutes());
         return param;
     }
     @Cacheable(value = "shareCache", key = "#key", unless = "#result == null")
-    public SharePram get(String key) {
+    public SharePram get(int key) {
         //TODO
         return null;
     }
     @CacheEvict(value = "shareCache", key = "#key")
-    public void del(String key) {
+    public void del(int key) {
         //TODO
         System.out.println("del +++"+ key);
         cache.remove(key);

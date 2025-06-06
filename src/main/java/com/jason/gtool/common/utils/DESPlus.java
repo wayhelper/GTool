@@ -5,7 +5,7 @@ import java.security.Key;
 import java.security.Security;
 
 public class DESPlus {
-	private static String strDefaultKey = "chenql";
+	private static String strDefaultKey = "jingway";
 
 	private Cipher encryptCipher = null;
 
@@ -81,7 +81,6 @@ public class DESPlus {
 	 * @throws Exception
 	 */
 	public DESPlus(String strKey) throws Exception {
-		Security.addProvider(new com.sun.crypto.provider.SunJCE());
 		Key key = getKey(strKey.getBytes());
 
 		encryptCipher = Cipher.getInstance("DES");

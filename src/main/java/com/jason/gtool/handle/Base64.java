@@ -15,7 +15,6 @@ import java.util.List;
 */
 public class Base64 implements IStrategy {
 
-
     private Result encrypt(String data) {
         return Result.get(200, "加密成功", cn.hutool.core.codec.Base64.encode(data));
     }
