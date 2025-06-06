@@ -12,20 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class ShareCache {
-    @Autowired
-    ApplicationContext applicationContext;
-    /**
-     * solve same class not use cache problem
-     * @return
-     */
-    ShareCache getProxy() {
-        return this.applicationContext.getBean(ShareCache.class);
-    }
 
-    private static ConcurrentHashMap<Integer, Long> cache = new ConcurrentHashMap<>();
     @Cacheable(value = "shareCache", key = "#key")
     public SharePram set(int key, SharePram param) {
-        cache.put(key, this.getTimeStampAfter5Minutes());
         return param;
     }
     @Cacheable(value = "shareCache", key = "#key", unless = "#result == null")
@@ -36,27 +25,5 @@ public class ShareCache {
     @CacheEvict(value = "shareCache", key = "#key")
     public void del(int key) {
         //TODO
-        System.out.println("del +++"+ key);
-        cache.remove(key);
-    }
-
-    /**
-     * Clear expired cache. The error is within 3 seconds.
-     */
-    @Scheduled(cron = "0/3 * * * * ?") //3秒执行一次
-    public void schdule () {
-        long now = System.currentTimeMillis();
-        cache.forEach((key, value) -> {
-            if (now > value) {
-                this.getProxy().del(key);
-            }
-        });
-    }
-
-    /**
-     * @return return timestamp after 5 minutes
-     */
-    private long getTimeStampAfter5Minutes() {
-        return System.currentTimeMillis()+ 5 * 60 * 1000;
     }
 }

@@ -62,5 +62,5 @@ public class ToolsServiceImpl implements IToolsService {
 
     // 添加常量，提高可读性和可维护性
     private static final String SUCCESS_MSG = "success";
-    private static final String SHARE_SUCCESS_MSG = "复制成功! 5 分钟后过期";
+    private static final String SHARE_SUCCESS_MSG = "复制成功! 请妥善保管此链接，一旦打开将认为失效！";
 }

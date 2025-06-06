@@ -45,6 +45,7 @@ public class IndexController {
         }
         model.addAttribute("share", this.shareCache.get(sid).getData());
         model.addAttribute("ro", this.shareCache.get(sid).getRoute());
+        this.shareCache.del(sid);
         return "tools";
     }
 
