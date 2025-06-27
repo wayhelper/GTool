@@ -49,7 +49,7 @@ public class Cryption implements IStrategy {
     }
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("加密md5", Operate.EMD5),
             new Op("加密des", Operate.EDES),
             new Op("解密des", Operate.DDES)

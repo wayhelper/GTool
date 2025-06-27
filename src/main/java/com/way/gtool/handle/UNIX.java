@@ -37,7 +37,7 @@ public class UNIX implements IStrategy {
     }
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("转时间戳", Operate.TIMESTAMP),
             new Op("转日期", Operate.DATE)
         );

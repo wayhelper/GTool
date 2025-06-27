@@ -47,5 +47,9 @@ public enum Operate {
     //转中文
     TOCN,
     //转英文
-    TOEN;
+    TOEN,
+    //生成二维码
+    ENQRCODE,
+    //解码二维码
+    DEQRCODE;
 }

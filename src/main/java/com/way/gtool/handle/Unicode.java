@@ -26,7 +26,7 @@ public class Unicode implements IStrategy {
 
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("Unicode加密", Operate.ENCRYPT),
             new Op("Unicode解密", Operate.DECRYPT)
         );

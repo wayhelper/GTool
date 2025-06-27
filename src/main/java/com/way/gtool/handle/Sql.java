@@ -29,7 +29,7 @@ public class Sql implements IStrategy {
     }
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("Mysql美化", Operate.MYSQL),
             new Op("Oracle美化", Operate.ORACLE),
             new Op("Pgsql美化", Operate.PGSQL)

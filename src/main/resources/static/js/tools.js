@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
  // init aceeditor
  function init(language, value) {
      editor = ace.edit("code");
+     editor.$blockScrolling = Infinity;
      editor.setTheme("ace/theme/" + localStorage.getItem('theme'));
      editor.session.setMode("ace/mode/" + language);
      editor.setFontSize(16);
@@ -103,7 +104,7 @@ function route(route){
     };
     $.ajax({
         type: 'POST',
-        url: '/gtool/tools/route',
+        url: '/tools/route',
         data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(response) {
@@ -161,11 +162,14 @@ function execute (op){
     };
     $.ajax({
         type: 'POST',
-        url: '/gtool/tools/execute',
+        url: '/tools/execute',
         data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(response) {
             if (response.code === 200) {
+                if (showQrCode(op, response.data)) {
+                    return;
+                }
                 msg(response.msg, 1500);
                 editor.setValue(response.data, 1);
                 themeBtn.style.display = 'none';
@@ -196,7 +200,7 @@ function share (){
     };
     $.ajax({
         type: 'POST',
-        url: '/gtool/tools/share',
+        url: '/tools/share',
         data: JSON.stringify(formData),
         contentType: 'application/json',
         success: function(response) {
@@ -243,4 +247,32 @@ function handle(op){
     return key;
 }
 
-
+// 展示生成的二维码
+function showQrCode(op, base64){
+    if (op.value==='ENQRCODE') {
+        showImageModal(base64);
+        return true;
+    }
+    return false;
+}
+// 黏贴事件监听
+document.addEventListener('paste', function (event) {
+    const editor = ace.edit("code");
+    const items = event.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+            const file = items[i].getAsFile();
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                let base64Image = e.target.result;
+                // 去掉前缀
+                if (base64Image.startsWith('data:image')) {
+                    base64Image = base64Image.substring(base64Image.indexOf(',') + 1);
+                }
+                editor.setValue(base64Image, 1); // 将Base64编码的图片插入到编辑器中
+                //console.log("Base64编码：", base64Image);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+});

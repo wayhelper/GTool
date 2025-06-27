@@ -32,7 +32,7 @@ public class Translate implements IStrategy {
 
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("转英文", Operate.TOEN),
             new Op("转中文", Operate.TOCN)
         );

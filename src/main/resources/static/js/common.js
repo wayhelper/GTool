@@ -169,3 +169,68 @@ function createAnnouncementModal(msg) {
     // 将 modal 添加到页面的 body 中
     document.body.appendChild(modal);
 }
+// 展示base64图片模态框
+function showImageModal(base64Image) {
+    // 防重复创建
+    if (document.getElementById('custom-modal')) return;
+
+    // 创建遮罩
+    const overlay = document.createElement('div');
+    overlay.id = 'custom-overlay';
+    Object.assign(overlay.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        zIndex: '9998'
+    });
+
+    // 创建模态框
+    const modal = document.createElement('div');
+    modal.id = 'custom-modal';
+    Object.assign(modal.style, {
+        position: 'fixed',
+        top: '50px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        backgroundColor: '#fff',
+        padding: '20px',
+        borderRadius: '10px',
+        zIndex: '9999',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+        textAlign: 'center'
+    });
+
+    // 创建图片并添加到 modal
+    const img = document.createElement('img');
+    img.src = base64Image;
+    img.style.maxWidth = '300px';
+    img.style.maxHeight = '300px';
+
+    // 创建关闭按钮
+    const closeBtn = document.createElement('button');
+    closeBtn.innerText = '关闭';
+    Object.assign(closeBtn.style, {
+        marginTop: '10px',
+        padding: '5px 10px',
+        backgroundColor: '#333',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer'
+    });
+
+    closeBtn.onclick = () => {
+        document.body.removeChild(overlay);
+        document.body.removeChild(modal);
+    };
+
+    // 装配结构
+    modal.appendChild(img);
+    modal.appendChild(document.createElement('br'));
+    modal.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+    document.body.appendChild(modal);
+}

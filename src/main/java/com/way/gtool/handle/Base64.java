@@ -26,7 +26,7 @@ public class Base64 implements IStrategy {
 
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("Base64加密", Operate.ENCRYPT),
             new Op("Base64解密", Operate.DECRYPT)
         );

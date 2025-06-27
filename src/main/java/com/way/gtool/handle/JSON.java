@@ -53,7 +53,7 @@ public class JSON implements IStrategy {
 
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("格式化JSON", Operate.FORMAT),
             new Op("压缩JSON", Operate.DENSITY),
             new Op("转义JSON", Operate.ESCAPE),

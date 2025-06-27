@@ -62,7 +62,7 @@ public class Case implements IStrategy {
 
     @Override
     public List<Op> getOps() {
-        return Arrays.asList(
+        return List.of(
             new Op("字母转大写", Operate.CAPITAL),
             new Op("字母转小写", Operate.LOWER),
             new Op("下划线&空格转驼峰", Operate.CAMEL),
