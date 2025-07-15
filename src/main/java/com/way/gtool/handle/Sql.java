@@ -64,5 +64,5 @@ public class Sql implements IStrategy {
         }
     }
 
-    public static record SQL(String sql){};
+    public record SQL(String sql){};
 }
