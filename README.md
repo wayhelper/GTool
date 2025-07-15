@@ -23,8 +23,8 @@
   - 分享功能
 ## 在线体验
 
-https://tool.alal.site/gtool
-部署地址：http://localhost:5010/gtool
+https://tool.alal.site
+部署地址：http://localhost:5010
 
 > 欢迎使用该平台，让繁琐的操作变得简单！保护您的数据隐私安全。
 
