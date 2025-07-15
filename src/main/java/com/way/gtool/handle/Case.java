@@ -75,7 +75,7 @@ public class Case implements IStrategy {
     public Result execute(Operate op, String data) {
         if (Operate.CAPITAL ==op) {
             return this.capital(data);
-        } else if (Operate.LOWER==op){
+        } else if (Operate.LOWER==op) {
             return this.lower(data);
         } else if (Operate.CAMEL==op) {
             return this.camel(data);

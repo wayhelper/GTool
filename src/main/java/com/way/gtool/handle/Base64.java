@@ -36,7 +36,7 @@ public class Base64 implements IStrategy {
     public Result execute(Operate op, String data) {
         if (Operate.DECRYPT ==op) {
             return this.decrypt(data);
-        } else if (Operate.ENCRYPT==op){
+        } else if (Operate.ENCRYPT==op) {
             return this.encrypt(data);
         } else {
             return Result.get(500, "操作失败! 未实现的方法",null);

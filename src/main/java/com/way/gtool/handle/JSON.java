@@ -65,7 +65,7 @@ public class JSON implements IStrategy {
     public Result execute(Operate op, String data) {
         if (Operate.FORMAT ==op) {
             return this.format(data);
-        } else if (Operate.DENSITY ==op){
+        } else if (Operate.DENSITY ==op) {
             return this.density(data);
         } else if (Operate.ESCAPE ==op) {
             return this.escape(data);

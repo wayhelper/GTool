@@ -47,7 +47,7 @@ public class UNIX implements IStrategy {
     public Result execute(Operate op, String data) {
         if (Operate.TIMESTAMP ==op) {
             return this.timestamp(data);
-        } else if (Operate.DATE==op){
+        } else if (Operate.DATE==op) {
             return this.date(data);
         } else {
             return Result.get(500, "操作失败! 未实现的方法",null);

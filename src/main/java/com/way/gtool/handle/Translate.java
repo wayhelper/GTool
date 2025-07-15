@@ -42,7 +42,7 @@ public class Translate implements IStrategy {
     public Result execute(Operate op, String data) {
         if (Operate.TOEN ==op) {
             return this.toEN(data);
-        } else if (Operate.TOCN==op){
+        } else if (Operate.TOCN==op) {
             return this.toCN(data);
         } else {
             return Result.get(500, "操作失败! 未实现的方法",null);

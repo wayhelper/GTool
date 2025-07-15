@@ -54,10 +54,8 @@ public class QrCode implements IStrategy {
     @Override
     public Result execute(Operate op, String data) {
         if (Operate.ENQRCODE == op) {
-            // 生成二维码逻辑
             return this.en(data);
         } else if (Operate.DEQRCODE == op) {
-            // 解析二维码逻辑
             return this.de(data);
         } else {
             return Result.get(500, "操作失败! 未实现的方法", null);
