@@ -15,7 +15,7 @@ import java.util.List;
  * @desciption: sql工具
  */
 public class Sql implements IStrategy {
-    private String prompt="你是一个SQL美化工具，按照要求美化SQL语句，不要有多余的回答。";
+    private final String prompt="你是一个SQL美化工具，按照要求美化SQL语句，不要有多余的回答。";
     private Result mysql(String data) {
         SQL beauty = SpringContextUtil.getBean(ChatClient.Builder.class)
             .defaultSystem(prompt).build()

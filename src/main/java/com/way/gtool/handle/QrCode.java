@@ -1,6 +1,5 @@
 package com.way.gtool.handle;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import com.way.gtool.common.utils.Result;
@@ -10,7 +9,6 @@ import com.way.gtool.domain.vo.Op;
 import cn.hutool.core.codec.Base64;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.util.List;
 
 /**
