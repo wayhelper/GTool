@@ -1,44 +1,55 @@
-# 在线工具平台
+---
 
-一个简洁高效的在线工具平台，提供多种开发和数据处理功能，助力日常工作效率提升。
+# Online Tools Platform
 
-## 功能特色
+A simple and efficient online tools platform offering a variety of development and data processing functions to boost your daily productivity.
 
-- **JSON 工具**：
-  - 格式化 JSON
-  - 压缩 JSON
-  - 转义/去除转义 JSON
-- **Base64 工具**：
-  - 编码/解码 Base64
-- **Unicode 工具**：
-  - 字符转 Unicode
-  - Unicode 转字符
-- **大小写转换**：
-  - 一键切换字母大小写
-- **SQL 美化**：
-  - 快速美化 SQL 语句，提升可读性
-- **时间戳转换**：
-  - 时间戳与日期时间相互转换
-- **更多**
-  - 分享功能
-## 在线体验
+## Features
 
-https://tool.alal.site
-部署地址：http://localhost:5010
+* **JSON Tools**:
 
-> 欢迎使用该平台，让繁琐的操作变得简单！保护您的数据隐私安全。
+  * Format JSON
+  * Minify JSON
+  * Escape/Unescape JSON
+* **Base64 Tools**:
 
-## 使用指南
+  * Encode/Decode Base64
+* **Unicode Tools**:
 
-1. 打开网站，选择需要的功能模块。
-2. 输入内容并执行相应操作。
-3. 结果将在页面下方实时展示。
+  * Character to Unicode
+  * Unicode to Character
+* **Case Converter**:
 
-## 技术支持
-本项目完全开源给开发者使用。喜欢点个 star ⭐
+  * One-click switch between uppercase and lowercase
+* **SQL Beautifier**:
 
-如果您有任何问题或建议，请联系 [支持邮箱](mailto:guojingwei129@gmail.com)。
+  * Quickly beautify SQL statements for better readability
+* **Timestamp Converter**:
+
+  * Convert between timestamp and datetime
+* **More**:
+
+  * Share functionality
+
+## Online Demo
+
+[https://tool.alal.site](https://tool.alal.site)
+Deployment address: [http://localhost:5010](http://localhost:5010)
+
+> Welcome to use this platform to simplify tedious tasks and protect your data privacy.
+
+## User Guide
+
+1. Open the website and choose the function module you need.
+2. Enter your content and execute the corresponding action.
+3. The result will be displayed in real time at the bottom of the page.
+
+## Technical Support
+
+This project is fully open source for developers. If you like it, give it a star ⭐
+
+If you have any questions or suggestions, please contact [Support Email](mailto:guojingwei129@gmail.com).
 
 ---
 
-**快来部署你的私人工具类网站吧! 🎉**
+**Start deploying your own personal tool website now! 🎉**
