@@ -3,6 +3,8 @@ let bgcolor ='#f4f4f9';
 
 // after load
  window.onload = function () {
+     var sv = document.getElementById('sv').value;
+     init('json', sv);
      let bulletin = localStorage.getItem("bulletin");
      if (!bulletin) {
          localStorage.setItem("bulletin", "感谢您访问我们的工具网站！我们提供多种实用工具，帮助您更高效地完成工作。请随时探索和使用！如您需要更多定制功能请自行fork本项目进行二次开发");
