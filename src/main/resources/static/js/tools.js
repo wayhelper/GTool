@@ -169,7 +169,7 @@ function execute (op){
         contentType: 'application/json',
         success: function(response) {
             if (response.code === 200) {
-                if (showQrCode(op, response.data)) {
+                if (handleShow(op, response.data)) {
                     return;
                 }
                 msg(response.msg, 1500);
@@ -249,6 +249,16 @@ function handle(op){
     return key;
 }
 
+function handleShow(op, data){
+     if (op.value==='ENQRCODE') {
+         showImageModal(data);
+         return true;
+     }else if (op.value==='TEXTTOVOICE') {
+        showTTLVoice(op, data);
+        return true;
+     }
+}
+
 // 展示生成的二维码
 function showQrCode(op, base64){
     if (op.value==='ENQRCODE') {
@@ -257,6 +267,24 @@ function showQrCode(op, base64){
     }
     return false;
 }
+
+function showTTLVoice(op, base64Str){
+    const binaryStr = atob(base64Str);
+    const len = binaryStr.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryStr.charCodeAt(i);
+    }
+    const blob = new Blob([bytes], { type: "audio/mp3" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "voice.mp3";
+    link.click();
+    URL.revokeObjectURL(link.href);
+    return true;
+}
+
+
 // 黏贴事件监听
 document.addEventListener('paste', function (event) {
     const editor = ace.edit("code");
@@ -271,8 +299,7 @@ document.addEventListener('paste', function (event) {
                 if (base64Image.startsWith('data:image')) {
                     base64Image = base64Image.substring(base64Image.indexOf(',') + 1);
                 }
-                editor.setValue(base64Image, 1); // 将Base64编码的图片插入到编辑器中
-                //console.log("Base64编码：", base64Image);
+                editor.setValue(base64Image, 1);
             };
             reader.readAsDataURL(file);
         }

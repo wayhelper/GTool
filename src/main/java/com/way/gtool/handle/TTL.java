@@ -11,6 +11,7 @@ import org.springframework.ai.openai.api.OpenAiAudioApi;
 import org.springframework.ai.openai.audio.speech.SpeechPrompt;
 import org.springframework.ai.openai.audio.speech.SpeechResponse;
 
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -18,19 +19,12 @@ import java.util.List;
  * @date 2025/7/8 17:04
  * @description: 音频
  */
-@Deprecated
 public class TTL implements IStrategy {
 
     private Result toVoice(String data){
-        OpenAiAudioSpeechOptions speechOptions = OpenAiAudioSpeechOptions.builder()
-            .model("gemini-2.5-flash-preview-tts")
-            .voice(OpenAiAudioApi.SpeechRequest.Voice.ALLOY)
-            .responseFormat(OpenAiAudioApi.SpeechRequest.AudioResponseFormat.MP3)
-            .speed(1.0f)
-            .build();
-        SpeechPrompt speechPrompt = new SpeechPrompt(data, speechOptions);
+        SpeechPrompt speechPrompt = new SpeechPrompt(data);
         SpeechResponse response = SpringContextUtil.getBean(OpenAiAudioSpeechModel.class).call(speechPrompt);
-        return Result.get(200, "转换成功", response);
+        return Result.get(200, "转换成功", Base64.getEncoder().encodeToString(response.getResult().getOutput()));
     }
 
     @Override

@@ -2,6 +2,8 @@ spring:
   ai:
     model:
       chat: openai
+      audio:
+        speech: openai
     openai:
       base-url: ${OPENAI_BASE_URL:https://i.alal.site/v1beta/openai}
       api-key: ${OPENAI_API_KEY:}
@@ -9,6 +11,14 @@ spring:
         options:
           model: ${OPENAI_MODEL:gemini-2.5-flash}
         completions-path: ${COMPLETIONS_PATH:/chat/completions}
+      audio:
+        speech:
+          base-url: ${OPENAI_SPEECH_URL:https://i.alal.site/v1beta/openai}
+          api-key: ${OPENAI_SPEECH_KEY:}
+          options:
+            model: ${OPENAI_SPEECH_MODEL:whisper-1}
+            voice: ${OPENAI_VOICE:alloy}
+            speed: ${OPENAI_SPEED:1.0}
   application:
     name: GTool
   thymeleaf:

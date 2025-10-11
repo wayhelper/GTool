@@ -68,4 +68,8 @@ public class Cryption implements IStrategy {
             return Result.get(500, "操作失败! 未实现的方法",null);
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println(new Cryption().edes(",1"));
+    }
 }
