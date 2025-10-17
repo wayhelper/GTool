@@ -6,8 +6,6 @@ import com.way.gtool.domain.IStrategy;
 import com.way.gtool.domain.type.Operate;
 import com.way.gtool.domain.vo.Op;
 import org.springframework.ai.openai.OpenAiAudioSpeechModel;
-import org.springframework.ai.openai.OpenAiAudioSpeechOptions;
-import org.springframework.ai.openai.api.OpenAiAudioApi;
 import org.springframework.ai.openai.audio.speech.SpeechPrompt;
 import org.springframework.ai.openai.audio.speech.SpeechResponse;
 
