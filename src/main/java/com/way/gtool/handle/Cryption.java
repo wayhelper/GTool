@@ -7,7 +7,6 @@ import com.way.gtool.domain.IStrategy;
 import com.way.gtool.domain.type.Operate;
 import com.way.gtool.domain.vo.Op;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Cryption implements IStrategy {
