@@ -25,6 +25,9 @@ spring:
     cache: true
 server:
   port: 5010
+  error:
+    whitelabel:
+      enabled: false
 #log config
 logging:
   level:

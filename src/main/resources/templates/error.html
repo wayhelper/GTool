@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+    <title th:text="${pageTitle}">404 - Haunted Drive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; background: #000; font-family: monospace; }
+        #scare { position: absolute; inset: 0; background: red; opacity: 0; pointer-events: none; mix-blend-mode: overlay; transition: opacity 0.1s; z-index: 50; }
+        .key { border: 1px solid #555; padding: 2px 6px; border-radius: 4px; background: #222; margin: 0 1px; }
+    </style>
+</head>
+<body class="text-white select-none">
+
+<div id="scare"></div>
+
+<div class="absolute inset-0 pointer-events-none p-8 flex flex-col justify-between z-20">
+    <div>
+        <h1 class="text-6xl font-bold text-red-600 drop-shadow-md">404</h1>
+        <div class="mt-2 flex gap-3 text-xs items-center">
+            <span id="w-badge" class="px-2 py-1 rounded border bg-black/50 backdrop-blur"></span>
+            <span class="text-gray-400">信号中断 // 寻找路标</span>
+        </div>
+    </div>
+
+    <div id="exit-ui" class="text-center transition-all duration-300 opacity-0 translate-y-4">
+        <div class="inline-block bg-emerald-950/90 border border-emerald-500 rounded-xl px-8 py-4">
+            <div class="text-2xl font-bold text-emerald-400">EXIT FOUND</div>
+            <div class="text-emerald-200 text-sm">按 <span class="bg-emerald-500 text-black px-1 rounded">ENTER</span> 离开</div>
+        </div>
+    </div>
+
+    <div class="text-right text-xs text-gray-400">
+        CONTROL: <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span>
+    </div>
+</div>
+<div id="canvas-container"></div>
+
+<script>
+    // --- 配置与状态（Thymeleaf 注入） ---
+    const CONFIG = {
+        url: /*[[${exitUrl}]]*/ 'https://alal.site',
+        weather: /*[[${weather}]]*/ 'fog',
+        ghosts: /*[[${ghosts}]]*/ 12,
+        size: /*[[${mapSize}]]*/ 400
+    };
+</script>
+
+<script th:inline="none">
+    const state = {
+        speed: 0, acc: 0.02, max: 0.8, turn: 0.05,
+        input: { w:0, a:0, s:0, d:0 },
+        scareTime: 0, closeToExit: false
+    };
+
+    let scene, camera, renderer, car, rainGeo;
+    let ghosts = [], wheels = [], signPos;
+
+    // --- 初始化 UI ---
+    const wb = document.getElementById('w-badge');
+    wb.innerText = CONFIG.weather === 'rain' ? '⛈️ 阴雨绵绵' : '🌫️ 浓雾警告';
+    wb.className += CONFIG.weather === 'rain' ? ' border-blue-800 text-blue-300' : ' border-gray-600 text-gray-300';
+
+    // --- 核心函数 ---
+    function init() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020205);
+        scene.fog = new THREE.FogExp2(0x020205, CONFIG.weather === 'rain' ? 0.012 : 0.025);
+
+        camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // 灯光
+        scene.add(new THREE.AmbientLight(0x445566, 0.8));
+        const sun = new THREE.DirectionalLight(0xaaccff, 2);
+        sun.position.set(-50, 100, -50);
+        sun.castShadow = true;
+        Object.assign(sun.shadow.camera, { left: -100, right: 100, top: 100, bottom: -100 });
+        scene.add(sun);
+
+        // 构建世界
+        addMesh(scene, new THREE.PlaneGeometry(CONFIG.size, CONFIG.size), new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.8 }), {rotX:-Math.PI/2, receive:true});
+        createForest();
+        createGhosts();
+        if(CONFIG.weather === 'rain') createRain();
+
+        // 路标
+        const angle = (Math.random()-0.5)*Math.PI, dist = 50+Math.random()*50;
+        createSignPost(Math.sin(angle)*dist, -Math.cos(angle)*dist);
+
+        // 车辆
+        car = createCar();
+        scene.add(car);
+
+        // 事件
+        window.onresize = () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth,window.innerHeight); };
+        window.onkeydown = e => handleKey(e, true);
+        window.onkeyup = e => handleKey(e, false);
+
+        animate();
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const time = Date.now() * 0.001;
+
+        // 物理
+        if(state.input.w) state.speed += state.acc;
+        if(state.input.s) state.speed -= state.acc;
+        state.speed *= 0.96; // 摩擦力
+
+        if(Math.abs(state.speed) > 0.01) {
+            const dir = state.speed > 0 ? 1 : -1;
+            if(state.input.a) car.rotation.y += state.turn * dir;
+            if(state.input.d) car.rotation.y -= state.turn * dir;
+        }
+        car.translateZ(-state.speed);
+        car.children[0].position.y = 0.8 + Math.sin(time*20)*0.01*Math.abs(state.speed)*10;
+        wheels.forEach(w => w.rotation.x += state.speed * 2);
+
+        // 幽灵与惊吓
+        if(state.scareTime > 0) state.scareTime--;
+        const carDir = new THREE.Vector3(); car.getWorldDirection(carDir);
+        ghosts.forEach(g => {
+            g.lookAt(car.position);
+            g.position.y = 1.8 + Math.sin(time*2 + g.userData.off)*0.3;
+            if(state.scareTime <= 0) {
+                const d = g.position.distanceTo(car.position);
+                if(d < 3 || (d < 35 && carDir.dot(g.position.clone().sub(car.position).normalize()) > 0.9)) triggerScare();
+            }
+        });
+
+        // 雨
+        if(rainGeo) {
+            const pos = rainGeo.attributes.position.array;
+            for(let i=1; i<pos.length; i+=3) if((pos[i] -= 0.6) < 0) pos[i] = 60;
+            rainGeo.attributes.position.needsUpdate = true;
+            rainSystem.position.set(car.position.x, 0, car.position.z);
+        }
+
+        // 相机与UI
+        const camOff = new THREE.Vector3(0, 6, 12).applyMatrix4(car.matrixWorld);
+        camera.position.lerp(camOff, 0.1);
+        camera.lookAt(car.position.x, car.position.y+1, car.position.z);
+
+        const distToSign = car.position.distanceTo(signPos);
+        const ui = document.getElementById('exit-ui');
+        if(distToSign < 10 && !state.closeToExit) { state.closeToExit = true; ui.classList.remove('opacity-0', 'translate-y-4'); }
+        else if(distToSign >= 10 && state.closeToExit) { state.closeToExit = false; ui.classList.add('opacity-0', 'translate-y-4'); }
+
+        renderer.render(scene, camera);
+    }
+
+    // --- 辅助构建函数 (完整保留) ---
+    function addMesh(parent, geo, mat, opt={}) {
+        const m = new THREE.Mesh(geo, mat);
+        if(opt.pos) m.position.set(...opt.pos);
+        if(opt.rotX) m.rotation.x = opt.rotX;
+        if(opt.rotZ) m.rotation.z = opt.rotZ;
+        if(opt.cast) m.castShadow = true;
+        if(opt.receive) m.receiveShadow = true;
+        parent.add(m);
+        return m;
+    }
+
+    function createCar() {
+        const grp = new THREE.Group();
+        addMesh(grp, new THREE.BoxGeometry(2.2, 1, 4.5), new THREE.MeshStandardMaterial({ color: 0xb91c1c, roughness: 0.2 }), {pos:[0,0.8,0], cast:true}); // 车身
+        addMesh(grp, new THREE.BoxGeometry(2, 0.8, 2.5), new THREE.MeshStandardMaterial({ color: 0x111111 }), {pos:[0,1.6,-0.5], cast:true}); // 玻璃
+
+        const wGeo = new THREE.CylinderGeometry(0.4, 0.4, 0.4, 24);
+        [[-1.2,1.5], [1.2,1.5], [-1.2,-1.5], [1.2,-1.5]].forEach(p => wheels.push(addMesh(grp, wGeo, new THREE.MeshStandardMaterial({color:0x111111}), {pos:[p[0],0.4,p[1]], rotZ:Math.PI/2, cast:true})));
+
+        const addLight = (x) => {
+            const l = new THREE.SpotLight(0xfffff0, 3000, 80, 0.5, 0.3);
+            l.position.set(x, 1, -1.8); l.target.position.set(x, 0, -25); l.castShadow = true;
+            grp.add(l); grp.add(l.target);
+        };
+        addLight(-0.8); addLight(0.8);
+        grp.add(new THREE.PointLight(0xff0000, 10, 5)); // 尾灯
+        return grp;
+    }
+
+    function createGhosts() {
+        const geo = new THREE.CapsuleGeometry(0.5, 1.5, 4, 8);
+        const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.3, emissive: 0x88ccff, emissiveIntensity: 2 });
+        for(let i=0; i<CONFIG.ghosts; i++) {
+            let x, z;
+            do { x = (Math.random()-0.5)*CONFIG.size*0.7; z = (Math.random()-0.5)*CONFIG.size*0.7; } while(Math.sqrt(x*x+z*z)<30);
+            const g = addMesh(scene, geo, mat, {pos:[x,2,z]});
+            g.userData = { off: Math.random()*100 };
+            const eye = new THREE.MeshBasicMaterial({color:0});
+            addMesh(g, new THREE.SphereGeometry(0.12), eye, {pos:[-0.2,0.4,0.45]});
+            addMesh(g, new THREE.SphereGeometry(0.12), eye, {pos:[0.2,0.4,0.45]});
+            ghosts.push(g);
+        }
+    }
+
+    function createForest() {
+        const tGeo = new THREE.CylinderGeometry(0.3, 0.5, 2, 5), tMat = new THREE.MeshStandardMaterial({color:0x1a1510});
+        const lGeo = new THREE.ConeGeometry(2.5, 6, 5), lMat = new THREE.MeshStandardMaterial({color:0x0f1f25});
+        for(let i=0; i<150; i++) {
+            const g = new THREE.Group();
+            addMesh(g, tGeo, tMat, {pos:[0,1,0], cast:true});
+            addMesh(g, lGeo, lMat, {pos:[0,4,0], cast:true});
+            const r = 30 + Math.random()*(CONFIG.size/2-30), a = Math.random()*Math.PI*2;
+            g.position.set(Math.cos(a)*r, 0, Math.sin(a)*r);
+            g.scale.setScalar(0.8+Math.random()*0.8);
+            scene.add(g);
+        }
+    }
+
+    function createSignPost(x, z) {
+        const g = new THREE.Group();
+        addMesh(g, new THREE.CylinderGeometry(0.15,0.15,7), new THREE.MeshStandardMaterial({color:0x222}), {pos:[0,3.5,0], cast:true});
+
+        const cvs = document.createElement('canvas'); cvs.width=512; cvs.height=256;
+        const ctx = cvs.getContext('2d');
+        ctx.fillStyle='#047857'; ctx.fillRect(0,0,512,256);
+        ctx.lineWidth=15; ctx.strokeStyle='#fff'; ctx.strokeRect(10,10,492,236);
+        ctx.fillStyle='#fff'; ctx.font='bold 70px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText('主页', 256, 128);
+
+        const board = addMesh(g, new THREE.BoxGeometry(4,2,0.2), new THREE.MeshStandardMaterial({map:new THREE.CanvasTexture(cvs), emissive:0x047857, emissiveIntensity:0.5}), {pos:[0,6,0]});
+        const light = new THREE.PointLight(0x10b981, 100, 50); light.position.y=7.5; g.add(light);
+        g.position.set(x,0,z); g.lookAt(0,0,0);
+        scene.add(g);
+        signPos = g.position;
+    }
+
+    function createRain() {
+        const pos = [];
+        for(let i=0; i<1500; i++) pos.push((Math.random()-0.5)*120, Math.random()*60, (Math.random()-0.5)*120);
+        rainGeo = new THREE.BufferGeometry();
+        rainGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+        rainSystem = new THREE.Points(rainGeo, new THREE.PointsMaterial({color:0xaaaaaa, size:0.25, transparent:true, opacity:0.6}));
+        scene.add(rainSystem);
+    }
+
+    function triggerScare() {
+        const el = document.getElementById('scare');
+        el.style.opacity = '0.8';
+        setTimeout(() => el.style.opacity = '0', 100);
+        state.scareTime = 60;
+        camera.position.addScalar((Math.random()-0.5)*2); // 震动
+    }
+
+    function handleKey(e, isDown) {
+        if(state.input.hasOwnProperty(e.key.toLowerCase())) state.input[e.key.toLowerCase()] = isDown;
+        if(e.key === 'Enter' && isDown && state.closeToExit) {
+            document.body.style.opacity = '0';
+            setTimeout(() => location.href = CONFIG.url, 1000);
+        }
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>

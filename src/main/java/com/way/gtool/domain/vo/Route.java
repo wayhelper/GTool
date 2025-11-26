@@ -50,8 +50,8 @@ public class Route {
             new Route("时间戳转换",RouteEnum.UNIX),
             new Route("加解密",RouteEnum.CRYPTION),
             new Route("翻译",RouteEnum.TRANSLATE),
-            new Route("二维码", RouteEnum.QRCODE),
-            new Route("TTL", RouteEnum.TTL)
+            new Route("二维码", RouteEnum.QRCODE)/*,
+            new Route("TTL", RouteEnum.TTL)*/
         );
     }
 }

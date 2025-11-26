@@ -33,6 +33,17 @@ public class IndexController {
         model.addAttribute("ops", this.toolsService.getReouteOptions(RouteEnum.JSON).getData());
         return "tools";
     }
+
+    @GetMapping("/404")
+    public String page404(Model model) {
+        model.addAttribute("pageTitle", "404 - Drive Page");
+        model.addAttribute("exitUrl", "https://alal.site");
+        model.addAttribute("weather", Math.random() > 0.5 ? "rain" : "fog");
+        model.addAttribute("ghosts", 12);
+        model.addAttribute("mapSize", 400);
+        return "error";
+    }
+
     @GetMapping("/share/{sid}")
     public String share(@PathVariable("sid") int sid, Model model) {
         model.addAttribute("routes", toolsService.getRoutes().getData());

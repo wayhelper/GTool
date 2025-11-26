@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class TTL implements IStrategy {
 
-    private Result toVoice(String data){
+    private Result toVoice(String data) {
         SpeechPrompt speechPrompt = new SpeechPrompt(data);
         SpeechResponse response = SpringContextUtil.getBean(OpenAiAudioSpeechModel.class).call(speechPrompt);
         return Result.get(200, "转换成功", Base64.getEncoder().encodeToString(response.getResult().getOutput()));
