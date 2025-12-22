@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.way</groupId>
     <artifactId>GTool</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.5</version>
     <name>GTool</name>
     <description>GTool</description>
     <properties>
@@ -19,6 +19,7 @@
         <druid>1.2.8</druid>
         <springai>1.0.0</springai>
         <google>3.5.1</google>
+        <sa-token>1.44.0</sa-token>
     </properties>
     <dependencies>
         <dependency>
@@ -56,6 +57,17 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>${google}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot3-starter</artifactId>
+            <version>${sa-token}</version>
         </dependency>
 
     </dependencies>

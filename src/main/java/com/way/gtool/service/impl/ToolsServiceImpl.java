@@ -1,5 +1,6 @@
 package com.way.gtool.service.impl;
 
+import com.way.gtool.common.annotation.RateLimit;
 import com.way.gtool.domain.req.GDoPram;
 import com.way.gtool.common.utils.Result;
 import com.way.gtool.common.utils.ShareCache;
@@ -36,6 +37,7 @@ public class ToolsServiceImpl implements IToolsService {
     }
 
     @Override
+    @RateLimit(limit = 20, time = 60)
     public Result route(GDoPram param) {
         return param.getRoute().getStrategy().execute(param.getOp(), param.getData());
     }

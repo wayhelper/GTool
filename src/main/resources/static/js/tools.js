@@ -1,6 +1,5 @@
 let edit = true;
 let bgcolor ='#f4f4f9';
-
 // after load
  window.onload = function () {
      var sv = document.getElementById('sv').value;
@@ -176,12 +175,17 @@ function execute (op){
                 editor.setValue(response.data, 1);
                 themeBtn.style.display = 'none';
                 sharebutton.style.display = 'inline-block';
+            } else if(response.code === 401){
+                loading(false);
+                msg(response.msg, 1500);
+                let appKey = handle('auth');
+                auth(appKey);
             } else {
-                msg(response.msg, 0)
+                msg(response.msg, 0);
             }
         },
         error: function(error) {
-            msg(error.msg, 0)
+            msg(error.msg, 0);
         },
         complete: function() {
             loading(false);
@@ -227,6 +231,30 @@ function share (){
         }
     });
 }
+function auth(appKey) {
+     let formData ={
+         appKey: appKey
+     }
+    $.ajax({
+        type: 'POST',
+        url: '/auth/login',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function(response) {
+            if (response.code === 200) {
+                msg(response.msg, 1500);
+            } else {
+                msg(response.msg, 0)
+            }
+        },
+        error: function(error) {
+            msg(error.msg, 0)
+        },
+        complete: function() {
+            loading(false);
+        }
+    });
+}
 // handle key
 function handle(op){
     let key = null;
@@ -236,6 +264,8 @@ function handle(op){
         promptMessage = "请输入加密密钥：";
     } else if (op.value === 'DDES') {
         promptMessage = "请输入解密密钥：";
+    } else if(op === 'auth') {
+        promptMessage = "请输入认证密钥（appKey）：";
     } else {
         return key;
     }

@@ -41,7 +41,7 @@ public class IndexController {
         model.addAttribute("weather", Math.random() > 0.5 ? "rain" : "fog");
         model.addAttribute("ghosts", 12);
         model.addAttribute("mapSize", 400);
-        return "error";
+        return "404";
     }
 
     @GetMapping("/share/{sid}")
