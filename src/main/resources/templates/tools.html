@@ -26,7 +26,11 @@
             <button th:each="op : ${ops}" th:text="${op.name}" th:value="${op.op}" onclick="execute(this)"/>
         </div>
     </div>
-    <div class="footer">All Rights Reserved Jingway &copy; 2025-2026 <a href="https://github.com/jingbio/GTool">GitHub</a></div>
+    <div class="footer">
+        <a href="mailto:heyjingway@gmail.com" class="contact-link">
+            Contact Me 📫
+        </a>
+    </div>
     <input type="hidden" id="sv" th:value="${share}" />
     <input type="hidden" id="ro" th:value="${ro}" />
 </body>
