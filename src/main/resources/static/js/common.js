@@ -1,9 +1,61 @@
 /**
+ * 自动初始化 CSS 样式
+ */
+(function injectStyles() {
+    const css = `
+        .custom-msg {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            z-index: 10000;
+            font-size: 14px;
+        }
+
+        .g-load-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .g-load-loader {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #59a782;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        .g-load-text {
+            color: #59a782;
+            font-size: 14px;
+            font-family: sans-serif;
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    const style = document.createElement('style');
+    style.textContent = css;
+    document.head.appendChild(style);
+})();
+
+/**
  * 显示消息弹窗。
- * 如果 duration 为 0，则点击弹窗外部可关闭。
- * @param {string} message 要显示的消息内容。
- * @param {number} [duration=3000] 消息显示的持续时间（毫秒）。设置为 0 则需要手动关闭（如点击外部区域）。
- * @param {Function} [callback=null] 消息关闭后执行的回调函数。
  */
 function msg(message, duration = 3000, callback = null) {
     const msgDiv = document.createElement('div');
@@ -13,51 +65,59 @@ function msg(message, duration = 3000, callback = null) {
     document.body.appendChild(msgDiv);
 
     const removeMsg = () => {
-        msgDiv.remove();
+        if (msgDiv.parentNode) {
+            msgDiv.remove();
+        }
         if (callback && typeof callback === 'function') {
-            callback(); // 在消息移除后执行回调
+            callback();
         }
     };
 
     if (duration > 0) {
         setTimeout(removeMsg, duration);
     } else {
-        // 如果 duration 为 0，点击文档其他地方移除消息
         const handleDocumentClick = function(event) {
             if (!msgDiv.contains(event.target)) {
                 removeMsg();
                 document.removeEventListener('click', handleDocumentClick);
             }
         };
-        document.addEventListener('click', handleDocumentClick);
+        // 延迟添加监听，防止触发当前点击事件
+        setTimeout(() => {
+            document.addEventListener('click', handleDocumentClick);
+        }, 0);
     }
 }
 
 /**
  * 控制加载动画的显示与隐藏。
- * @param {boolean} sign true 为显示加载动画，false 为隐藏加载动画。
  */
-function loading(sign){
-    if(sign){
-        removeLoading(); // 先移除现有的，确保只有一个
+function loading(sign) {
+    if (sign) {
         createLoading();
-    }else{
+    } else {
         removeLoading();
     }
 }
 
 /**
  * 创建并显示加载动画。
- * 如果已存在加载动画，会先移除。
  */
-function createLoading(){
-    removeLoading(); // 确保在创建前移除任何现有的加载器
+function createLoading() {
+    removeLoading(); // 确保唯一性
     const container = document.createElement('div');
-    container.id='g-loading-id';
+    container.id = 'g-loading-id';
     container.classList.add('g-load-container');
+
     const loader = document.createElement('div');
     loader.classList.add('g-load-loader');
     container.appendChild(loader);
+
+    const text = document.createElement('div');
+    text.classList.add('g-load-text');
+    text.textContent = '加载中...';
+    container.appendChild(text);
+
     document.body.appendChild(container);
 }
 
@@ -67,10 +127,9 @@ function createLoading(){
 function removeLoading() {
     const loadDiv = document.getElementById('g-loading-id');
     if (loadDiv) {
-        loadDiv.parentNode.removeChild(loadDiv);
+        loadDiv.remove();
     }
 }
-
 /**
  * 创建并显示公告弹窗。
  * @param {string} [msg] 公告内容。如果未提供，将显示默认内容和当前时间。
